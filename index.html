@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+</head>
+<body onload="loadIp()"><!-- called when loaded to get IP -->
+
+    <!-- maindiv -->
+    <div id="maindiv">
+
+        <!-- ipaddress -->
+        <section id="ipaddress_cont">
+            <label id="ipaddress_label">Your Current IP ADDRESS is:</label>
+            <button id="ipaddress_btn" type="button">Get Data</button>
+        </section>
+
+        <!-- ipaddress info -->
+        <section id="ipinfo_container_align">
+            <section id="ipinfo_container_grid">
+                <section id="ipinfo_grid_item1">
+                    <article class="ipinfo_detail">
+                        <label>Lat:</label>
+                        <label id="lat"></label>
+                    </article>
+                    <article class="ipinfo_detail">
+                        <label>Long:</label>
+                        <label id="long"></label>
+                    </article>
+                </section>
+
+                <section id="ipinfo_grid_item2">
+                    <article class="ipinfo_detail">
+                        <label>City:</label>
+                        <label id="city"></label>
+                    </article>
+                    <article class="ipinfo_detail">
+                        <label>Region:</label>
+                        <label id="region"></label>
+                    </article>
+                </section>
+
+                <section id="ipinfo_grid_item3">
+                    <article class="ipinfo_detail">
+                        <label>Organisation:</label>
+                        <label id="org"></label>
+                    </article>
+                    <article class="ipinfo_detail">
+                        <label>Hostname:</label>
+                        <label id="host"></label>
+                    </article>
+                </section>
+            </section>
+        </section>
+
+        <!-- map -->
+        <section style="margin: 1rem 0rem 2rem 0rem;">
+            <iframe id="mapframe" frameborder="0"></iframe>
+        </section>
+        
+        <!-- timezone -->
+        <section id="timezone_container_align">
+            <section id="timezone_container">
+                <article class="timezone_detail">
+                    <label>Timezone:</label>
+                    <label id="zone"></label>
+                </article>
+
+                <article class="timezone_detail">
+                    <label>Date and Time:</label>
+                    <label id="dot"></label>
+                </article>
+
+                <article class="timezone_detail">
+                    <label>Pincode:</label>
+                    <label id="pin"></label>
+                </article>
+
+                <article class="timezone_detail">
+                    <label>Message:</label>
+                    <label id="pinmsg"></label>
+                </article>
+            </section>
+        </section>
+
+        <!-- post offices -->
+        <section id="postoffice_container_align">
+            <section id="postoffice_container">
+                <section id="postoffice_search">
+                    <img src="search (2).png" alt="searchicon" srcset="">
+                    <input id="postoffice_search_input" type="text" placeholder="Filter" oninput="filterPostOffice()">
+                </section>
+
+                <section id="postoffice_grid">
+                </section>
+            </section>
+        </section>
+    </div>
+
+    <!-- using jquery -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+     
+    <!-- using fetch API -->
+    <script>
+    let ipaddress=""; //intialize to empty
+    
+        //called everytime page is loaded/reloaded
+        async function loadIp(){
+        try{
+            const ipresp=await fetch("https://api.ipify.org?format=json");//fetch IP
+            if(!ipresp.ok)
+                throw "Error Fetching Your Ip";//if failed
+            const ipdata=await ipresp.json();
+            ipaddress=ipdata.ip;
+
+            //render IP and add eventlistener to btn
+            document.getElementById("ipaddress_label").innerHTML=`Your Current IP ADDRESS is:${ipaddress}`;
+            document.getElementById("ipaddress_btn").addEventListener("click",() => getUserIpInfo(ipaddress));
+        }
+        catch(errmsg){
+            alert("Error : "+errmsg);//for exception or error
+            alert("Reload and Try again");//msg to try again
+        }
+        }
+    
+    </script>
+<script src="script.js"></script>
+</body>
+</html>
